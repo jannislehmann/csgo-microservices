@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    container_name: valveapiclient_db
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: valveapi
+      POSTGRES_USER: csgo
+    env_file: csgo.env
+    ports:
+      - 127.0.0.1:5432:5432

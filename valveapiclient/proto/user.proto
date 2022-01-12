@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package valveapiclient;
+
+option go_package = "./proto;valveapiclient";
+
+message User {
+    uint64 id = 1;
+    string lastShareCode = 2;
+    string authCode = 3;
+    bool apiEnabled = 4;
+    string apiKey =  5;
+}
+
+message CreateUserRequest {
+    uint64 id = 1;
+}
+
+message GetUserRequest {
+    uint64 id = 1;
+}
+
+message UpdateUserApiCredentialsRequest {
+    uint64 id = 1;
+    string lastShareCode = 2;
+    string authCode = 3;
+    string apiKey =  4;
+}
+
+message StatusResponse {
+    bool success = 1;
+}
+
+service UserService {
+    rpc GetUser(GetUserRequest) returns (User) {}
+    rpc CreateUser(CreateUserRequest) returns (User) {}
+	rpc UpdateUserApiCredentials(UpdateUserApiCredentialsRequest) returns (StatusResponse) {}
+}

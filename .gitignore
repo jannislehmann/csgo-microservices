@@ -1,0 +1,8 @@
+# Workspace config
+.vscode
+
+# Persistent / test data
+data/
+
+# Config
+*/config.yaml

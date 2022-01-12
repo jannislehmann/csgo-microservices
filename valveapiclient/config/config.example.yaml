@@ -1,0 +1,10 @@
+global:
+  logLevel: info
+database:
+  host: localhost
+  port: 5432
+  username: csgo
+  password: secret
+  database: csgo
+broker:
+  uri: amqp://guest:guest@localhost:5672/
