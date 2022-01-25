@@ -1,0 +1,8 @@
+# don't commit the service binary to vcs
+gamecoordinatorclient
+
+# Workspace config
+.vscode
+
+# Config
+config/config.yaml

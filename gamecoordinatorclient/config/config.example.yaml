@@ -1,0 +1,8 @@
+global:
+  logLevel: info
+broker:
+  uri: amqp://guest:guest@localhost:5672/
+steam:
+  username: csgo
+  password: secret
+  twoFactorSecret: verysecret
