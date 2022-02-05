@@ -3,13 +3,9 @@
 This api consuming microservice has a set of users with match history authentication code and queries Valve's API to get the latest match share codes.
 These will then be published on the broker.
 
-## Configuration
+## Config
 
-Copy the `config.json.example` in the `configs` dir and rename it to `config.json` in the same dir.
-
-You can also use ENV vars to override single or set all configuration variables. The formatting for the configuration is as with the JSON configuration. The ENV base is `CSGO`. The Steam two factor secret turns into `STEAM_TWOFACTORSECRET`.
-
-Details about the global configuration can be found [here](https://github.com/Cludch/csgo-microservices/blob/main/shared/README.md#config).
+The service has the following extensions for the config.
 
 ### Database
 

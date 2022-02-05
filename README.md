@@ -39,6 +39,13 @@ This project tries to have a high test coverage. Most services have an interface
 With the use of [mockery](https://github.com/vektra/mockery) each service can easily generate mock definitions for each service class.
 Thus, unit tests are easy to write and should be implemented accordingly.
 
+## Configuration
+
+Copy the `config.json.example` of the service in the `config` dir and rename it to `config.json` in the same dir.
+
+You can also use ENV vars to override single or set all configuration variables. The formatting for the configuration is as with the JSON configuration. The ENV base is `CSGO`. The Steam two factor secret turns into `STEAM_TWOFACTORSECRET`.
+
+Details about the global configuration can be found [here](https://github.com/Cludch/csgo-microservices/blob/main/shared/README.md#config).
 ## CSGO Demo Tools
 
 This project used to be a monolithic microservice. The old source code can be seen [here](https://github.com/Cludch/csgo-tools/). This repository also has a fully functional suite with all the services,
