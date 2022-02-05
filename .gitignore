@@ -1,5 +1,5 @@
 # Workspace config
-.vscode
+.vscode/settings.json
 
 # Persistent / test data
 data/
