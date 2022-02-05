@@ -96,9 +96,10 @@ func (s *UserService) UpdateSteamApiUsage(u *User, active bool) error {
 		return errors.New("missing steam api auth code")
 	}
 
+	u.ApiEnabled = active
 	err := s.repo.UpdateSteamApiUsage(u)
-	if err == nil {
-		u.ApiEnabled = active
+	if err != nil {
+		u.ApiEnabled = !active
 	}
 	return err
 }
@@ -121,13 +122,14 @@ func (s *UserService) QueryLatestShareCode(u *User) (*share_code.ShareCodeData, 
 
 	// Disable user on error.
 	if err != nil {
+		// TODO: Disable user on error?
 		if os.IsTimeout(err) {
 			return nil, errors.New("user: lost connection while querying the steam api for the latest sharecode")
 		}
 
 		updateErr := s.UpdateSteamApiUsage(u, false)
-		if updateErr != nil {
-			const msg = "disabled csgo user %d due to an error (%t) in fetching the share code"
+		if updateErr == nil {
+			const msg = "disabled csgo user %d due to an error (%v) in fetching the share code"
 			log.Warnf(msg, steamID, err)
 		}
 		return nil, err
