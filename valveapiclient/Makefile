@@ -9,7 +9,7 @@ init:
 
 .PHONY: proto
 proto:
-	@protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:.  proto/*.proto
+	@protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. proto/*.proto
 
 .PHONY: update
 update:
