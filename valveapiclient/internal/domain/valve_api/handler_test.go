@@ -40,7 +40,7 @@ func (suite *HandlerTestSuite) TestGetNextShareCode() {
 	suite.consumerMock.On("RequestNextShareCode", apiKey, id, authCode, lastShareCode).Return(nextShareCode, nil)
 
 	sc, err := suite.handler.GetNextShareCode(context.TODO(), &pb.ShareCodeRequest{
-		SteamId:              id,
+		SteamID:              id,
 		ApiKey:               apiKey,
 		MatchHistoryAuthCode: authCode,
 		PreviousShareCode:    lastShareCode,
@@ -48,8 +48,8 @@ func (suite *HandlerTestSuite) TestGetNextShareCode() {
 	suite.Nil(err)
 	suite.NotNil(sc)
 	suite.Equal(sc.Encoded, decoded.Encoded)
-	suite.Equal(sc.MatchId, decoded.MatchID)
-	suite.Equal(sc.OutcomeId, decoded.OutcomeID)
+	suite.Equal(sc.MatchID, decoded.MatchID)
+	suite.Equal(sc.OutcomeID, decoded.OutcomeID)
 	suite.Equal(sc.Token, decoded.Token)
 }
 
@@ -57,7 +57,7 @@ func (suite *HandlerTestSuite) TestGetNextShareCode_InvalidShareCodeResponse() {
 	suite.consumerMock.On("RequestNextShareCode", apiKey, id, authCode, lastShareCode).Return("invalid share code", nil)
 
 	sc, err := suite.handler.GetNextShareCode(context.TODO(), &pb.ShareCodeRequest{
-		SteamId:              id,
+		SteamID:              id,
 		ApiKey:               apiKey,
 		MatchHistoryAuthCode: authCode,
 		PreviousShareCode:    lastShareCode,
@@ -70,7 +70,7 @@ func (suite *HandlerTestSuite) TestGetNextShareCode_ConsumerError() {
 	suite.consumerMock.On("RequestNextShareCode", apiKey, id, authCode, lastShareCode).Return("", errors.New(""))
 
 	sc, err := suite.handler.GetNextShareCode(context.TODO(), &pb.ShareCodeRequest{
-		SteamId:              id,
+		SteamID:              id,
 		ApiKey:               apiKey,
 		MatchHistoryAuthCode: authCode,
 		PreviousShareCode:    lastShareCode,
@@ -84,7 +84,7 @@ func (suite *HandlerTestSuite) TestGetNextShareCode_NoNewShareCode() {
 	suite.consumerMock.On("RequestNextShareCode", apiKey, id, authCode, lastShareCode).Return(emptyShareCode, nil)
 
 	sc, err := suite.handler.GetNextShareCode(context.TODO(), &pb.ShareCodeRequest{
-		SteamId:              id,
+		SteamID:              id,
 		ApiKey:               apiKey,
 		MatchHistoryAuthCode: authCode,
 		PreviousShareCode:    lastShareCode,

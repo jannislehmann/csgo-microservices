@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewId(t *testing.T) {
+func TestNewID(t *testing.T) {
 	output := entity.NewID()
 	assert.NotNil(t, output)
 }
 
-func TestStringToId(t *testing.T) {
+func TestStringToID(t *testing.T) {
 	input := "3fa4f16f-a5fd-4cae-a943-e47ce13f49b6"
 	output, err := entity.StringToID(input)
 	assert.Nil(t, err)
@@ -20,7 +20,7 @@ func TestStringToId(t *testing.T) {
 	assert.Equal(t, input, output.String())
 }
 
-func TestStringToIdInvalidUUID(t *testing.T) {
+func TestStringToIDInvalidUUID(t *testing.T) {
 	input := "invalid"
 	_, err := entity.StringToID(input)
 	assert.NotNil(t, err)

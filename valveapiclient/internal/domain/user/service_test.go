@@ -28,42 +28,42 @@ func TestServiceTestSuite(t *testing.T) {
 }
 
 func (suite *ServiceTestSuite) TestGetUser() {
-	suite.repositoryMock.On("Find", TestId).Return(&user.User{ID: TestId}, nil)
+	suite.repositoryMock.On("Find", TestID).Return(&user.User{ID: TestID}, nil)
 
-	u, err := suite.service.GetUser(TestId)
+	u, err := suite.service.GetUser(TestID)
 	suite.Nil(err)
 	suite.NotNil(u)
-	suite.Equal(u.ID, TestId)
+	suite.Equal(u.ID, TestID)
 }
 
 func (suite *ServiceTestSuite) TestGetUser_NotFound() {
-	suite.repositoryMock.On("Find", TestId).Return(nil, errors.New(""))
+	suite.repositoryMock.On("Find", TestID).Return(nil, errors.New(""))
 
-	u, err := suite.service.GetUser(TestId)
+	u, err := suite.service.GetUser(TestID)
 	suite.Nil(u)
 	suite.NotNil(err)
 }
 
 func (suite *ServiceTestSuite) TestCreateUser() {
-	suite.repositoryMock.On("Find", TestId).Return(nil, nil)
-	suite.repositoryMock.On("Create", &user.User{ID: TestId}).Return(nil)
+	suite.repositoryMock.On("Find", TestID).Return(nil, nil)
+	suite.repositoryMock.On("Create", &user.User{ID: TestID}).Return(nil)
 
-	u, err := suite.service.CreateUser(TestId)
+	u, err := suite.service.CreateUser(TestID)
 	suite.NotNil(u)
-	suite.Equal(u.ID, TestId)
+	suite.Equal(u.ID, TestID)
 	suite.Nil(err)
 }
 
 func (suite *ServiceTestSuite) TestCreateUser_Exists() {
-	suite.repositoryMock.On("Find", TestId).Return(&user.User{ID: TestId}, nil)
+	suite.repositoryMock.On("Find", TestID).Return(&user.User{ID: TestID}, nil)
 
-	u, err := suite.service.CreateUser(TestId)
+	u, err := suite.service.CreateUser(TestID)
 	suite.Nil(u)
 	suite.NotNil(err)
 }
 
 func (suite *ServiceTestSuite) TestGetUsersWithApiEnabled() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.repositoryMock.On("ListAllWithApiEnabled").Return([]*user.User{testUser}, nil)
 
 	u, err := suite.service.GetUsersWithApiEnabled()
@@ -74,7 +74,7 @@ func (suite *ServiceTestSuite) TestGetUsersWithApiEnabled() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateLatestShareCode() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	sc, _ := share_code.Decode(TestShareCode)
 	suite.repositoryMock.On("UpdateLatestShareCode", testUser).Return(nil)
 
@@ -84,7 +84,7 @@ func (suite *ServiceTestSuite) TestUpdateLatestShareCode() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateLatestShareCode_Error() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	sc, _ := share_code.Decode(TestShareCode)
 	suite.repositoryMock.On("UpdateLatestShareCode", testUser).Return(errors.New(""))
 
@@ -94,7 +94,7 @@ func (suite *ServiceTestSuite) TestUpdateLatestShareCode_Error() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Enable() {
-	testUser := &user.User{ID: TestId, AuthCode: TestAuthCode}
+	testUser := &user.User{ID: TestID, AuthCode: TestAuthCode}
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(nil)
 
 	err := suite.service.UpdateSteamApiUsage(testUser, true)
@@ -103,7 +103,7 @@ func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Enable() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Disable() {
-	testUser := &user.User{ID: TestId, AuthCode: TestAuthCode}
+	testUser := &user.User{ID: TestID, AuthCode: TestAuthCode}
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(nil)
 
 	err := suite.service.UpdateSteamApiUsage(testUser, false)
@@ -112,7 +112,7 @@ func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Disable() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_MissingAuthCode() {
-	testUser := &user.User{ID: TestId, ApiEnabled: false}
+	testUser := &user.User{ID: TestID, ApiEnabled: false}
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(nil)
 
 	err := suite.service.UpdateSteamApiUsage(testUser, true)
@@ -121,7 +121,7 @@ func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_MissingAuthCode() {
 }
 
 func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_DisableWithMissingAuthCode() {
-	testUser := &user.User{ID: TestId, ApiEnabled: true}
+	testUser := &user.User{ID: TestID, ApiEnabled: true}
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(nil)
 
 	err := suite.service.UpdateSteamApiUsage(testUser, false)
@@ -130,7 +130,7 @@ func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_DisableWithMissingAuthCod
 }
 
 func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Error() {
-	testUser := &user.User{ID: TestId, ApiEnabled: true}
+	testUser := &user.User{ID: TestID, ApiEnabled: true}
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(errors.New(""))
 
 	err := suite.service.UpdateSteamApiUsage(testUser, false)
@@ -139,7 +139,7 @@ func (suite *ServiceTestSuite) TestUpdateSteamApiUsage_Error() {
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", nil)
 
 	suite.repositoryMock.On("UpdateApiKey", testUser).Return(nil)
@@ -156,13 +156,13 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode() {
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_InvalidShareCode() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	err := suite.service.AddSteamMatchHistoryAuthenticationCode(testUser, TestApiKey, TestAuthCode, "invalid")
 	suite.NotNil(err)
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_ConsumerError() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", errors.New(""))
 
 	err := suite.service.AddSteamMatchHistoryAuthenticationCode(testUser, TestApiKey, TestAuthCode, TestShareCode)
@@ -170,7 +170,7 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_Consum
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdateApiKeyError() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", errors.New(""))
 	suite.repositoryMock.On("UpdateApiKey", testUser).Return(errors.New(""))
 
@@ -179,7 +179,7 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_Update
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdateMatchAuthCodeError() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", errors.New(""))
 	suite.repositoryMock.On("UpdateApiKey", testUser).Return(nil)
 	suite.repositoryMock.On("UpdateMatchAuthCode", testUser).Return(errors.New(""))
@@ -189,7 +189,7 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_Update
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdatLatestShareCodeError() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", errors.New(""))
 	suite.repositoryMock.On("UpdateApiKey", testUser).Return(nil)
 	suite.repositoryMock.On("UpdateMatchAuthCode", testUser).Return(nil)
@@ -200,7 +200,7 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdatL
 }
 
 func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdatSteamApiUsageError() {
-	testUser := &user.User{ID: TestId}
+	testUser := &user.User{ID: TestID}
 	suite.apiConsumerMock.On("RequestNextShareCode", TestApiKey, testUser.ID, TestAuthCode, TestShareCode).Return("", errors.New(""))
 	suite.repositoryMock.On("UpdateApiKey", testUser).Return(nil)
 	suite.repositoryMock.On("UpdateMatchAuthCode", testUser).Return(nil)
@@ -212,7 +212,7 @@ func (suite *ServiceTestSuite) TestAddSteamMatchHistoryAuthenticationCode_UpdatS
 }
 
 func (suite *ServiceTestSuite) TestQueryLatestShareCode() {
-	testUser := &user.User{ID: TestId, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
+	testUser := &user.User{ID: TestID, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
 	suite.apiConsumerMock.On("RequestNextShareCode", testUser.ApiKey, testUser.ID, testUser.AuthCode, testUser.LastShareCode).Return(TestShareCode, nil)
 
 	sc, err := suite.service.QueryLatestShareCode(testUser)
@@ -222,7 +222,7 @@ func (suite *ServiceTestSuite) TestQueryLatestShareCode() {
 }
 
 func (suite *ServiceTestSuite) TestQueryLatestShareCode_ApiDisabled() {
-	testUser := &user.User{ID: TestId, ApiEnabled: false, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
+	testUser := &user.User{ID: TestID, ApiEnabled: false, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
 
 	sc, err := suite.service.QueryLatestShareCode(testUser)
 	suite.Nil(sc)
@@ -230,7 +230,7 @@ func (suite *ServiceTestSuite) TestQueryLatestShareCode_ApiDisabled() {
 }
 
 func (suite *ServiceTestSuite) TestQueryLatestShareCode_ConsumerError() {
-	testUser := &user.User{ID: TestId, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
+	testUser := &user.User{ID: TestID, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
 	suite.apiConsumerMock.On("RequestNextShareCode", testUser.ApiKey, testUser.ID, testUser.AuthCode, testUser.LastShareCode).Return("", errors.New(""))
 	suite.repositoryMock.On("UpdateSteamApiUsage", testUser).Return(nil)
 
@@ -241,7 +241,7 @@ func (suite *ServiceTestSuite) TestQueryLatestShareCode_ConsumerError() {
 }
 
 func (suite *ServiceTestSuite) TestQueryLatestShareCode_NoNewMatch() {
-	testUser := &user.User{ID: TestId, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
+	testUser := &user.User{ID: TestID, ApiEnabled: true, AuthCode: TestAuthCode, LastShareCode: TestShareCode, ApiKey: TestApiKey}
 	suite.apiConsumerMock.On("RequestNextShareCode", testUser.ApiKey, testUser.ID, testUser.AuthCode, testUser.LastShareCode).Return("", nil)
 
 	sc, err := suite.service.QueryLatestShareCode(testUser)

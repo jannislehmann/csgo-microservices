@@ -23,8 +23,8 @@ func IsInvalidShareCodeError(err error) bool {
 // ShareCodeData holds the decoded match data and encoded share code.
 type ShareCodeData struct {
 	Encoded   string `json:"encoded"`
-	OutcomeID uint64 `json:"outcomeId"`
-	MatchID   uint64 `json:"matchId"`
+	OutcomeID uint64 `json:"outcomeID"`
+	MatchID   uint64 `json:"matchID"`
 	Token     uint32 `json:"token"`
 }
 

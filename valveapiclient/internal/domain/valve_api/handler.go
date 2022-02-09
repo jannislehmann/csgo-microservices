@@ -22,7 +22,7 @@ func NewValveMatchApiHandler(c valve_match_api.ValveMatchApiConsumerUseCase) *Va
 
 func (h *ValveMatchApiHandler) GetNextShareCode(ctx context.Context, req *pb.ShareCodeRequest) (*pb.ShareCode, error) {
 	// Consume valve's api to get the next sharecode.
-	encoded, err := h.consumer.RequestNextShareCode(req.ApiKey, req.GetSteamId(), req.MatchHistoryAuthCode, req.PreviousShareCode)
+	encoded, err := h.consumer.RequestNextShareCode(req.ApiKey, req.GetSteamID(), req.MatchHistoryAuthCode, req.PreviousShareCode)
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +39,8 @@ func (h *ValveMatchApiHandler) GetNextShareCode(ctx context.Context, req *pb.Sha
 
 	return &pb.ShareCode{
 		Encoded:   sc.Encoded,
-		MatchId:   sc.MatchID,
-		OutcomeId: sc.OutcomeID,
+		MatchID:   sc.MatchID,
+		OutcomeID: sc.OutcomeID,
 		Token:     sc.Token,
 	}, nil
 }

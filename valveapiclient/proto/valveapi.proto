@@ -6,13 +6,13 @@ option go_package = "./proto;valveapiclient";
 
 message ShareCode {
     string encoded = 1;
-    uint64 outcomeId = 2;
-    uint64 matchId = 3;
+    uint64 outcomeID = 2;
+    uint64 matchID = 3;
     uint32 token = 4;
 }
 
 message ShareCodeRequest {
-    uint64 steamId = 1;
+    uint64 steamID = 1;
     string apiKey = 2;
     string matchHistoryAuthCode = 3;
     string previousShareCode = 4;

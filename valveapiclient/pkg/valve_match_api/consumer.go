@@ -30,24 +30,24 @@ type MatchResponse struct {
 	} `json:"result"`
 }
 
-// InvalidSteamId is used to notify when the supplied credentials are not valid / cannot be used with the api.
-type InvalidSteamId struct {
-	SteamId string
+// InvalidSteamID is used to notify when the supplied credentials are not valid / cannot be used with the api.
+type InvalidSteamID struct {
+	SteamID string
 }
 
-func (e *InvalidSteamId) Error() string {
+func (e *InvalidSteamID) Error() string {
 	const msg = "Invalid steam id %v."
-	return fmt.Sprintf(msg, e.SteamId)
+	return fmt.Sprintf(msg, e.SteamID)
 }
 
 // InvalidMatchHistoryCredentials is used to notify when the supplied credentials are not valid / cannot be used with the api.
 type InvalidApiKeyOrAuthCode struct {
-	SteamId string
+	SteamID string
 }
 
 func (e *InvalidApiKeyOrAuthCode) Error() string {
 	const msg = "Invalid api key or auth code for steam id %v."
-	return fmt.Sprintf(msg, e.SteamId)
+	return fmt.Sprintf(msg, e.SteamID)
 }
 
 // RequestNextShareCode returns the next match's share code.
@@ -80,13 +80,13 @@ func (s *ValveMatchApiConsumerService) RequestNextShareCode(steamAPIKey string, 
 	// Forbidden = wrong api keys.
 	if r.StatusCode == http.StatusForbidden {
 		r.Body.Close()
-		return "", &InvalidApiKeyOrAuthCode{SteamId: steamIDString}
+		return "", &InvalidApiKeyOrAuthCode{SteamID: steamIDString}
 	}
 
 	// Precondition Failed = Steam id wrong.
 	if r.StatusCode == http.StatusPreconditionFailed {
 		r.Body.Close()
-		return "", &InvalidSteamId{SteamId: steamIDString}
+		return "", &InvalidSteamID{SteamID: steamIDString}
 	}
 
 	// 500 or 504 indicate an error with the API from Valve and not an authentication problem.

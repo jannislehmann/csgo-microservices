@@ -85,8 +85,8 @@ func (suite *ConsumerTestSuite) TestRequestNextShareCode_NoNewData() {
 
 	sc, err := suite.consumer.RequestNextShareCode(apiKey, id, authCode, lastShareCode)
 	suite.NotNil(err)
-	var invalidSteamIdErr *valve_match_api.InvalidSteamId
-	suite.ErrorAs(err, &invalidSteamIdErr)
+	var invalidSteamIDErr *valve_match_api.InvalidSteamID
+	suite.ErrorAs(err, &invalidSteamIDErr)
 	suite.NotNil(sc)
 	suite.Equal("", sc)
 }

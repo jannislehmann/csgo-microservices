@@ -27,15 +27,15 @@ func TestHandlerTestSuite(t *testing.T) {
 }
 
 func (suite *HandlerTestSuite) TestGetUser() {
-	suite.serviceMock.On("GetUser", TestId).Return(&user.User{
-		ID:            TestId,
+	suite.serviceMock.On("GetUser", TestID).Return(&user.User{
+		ID:            TestID,
 		ApiEnabled:    true,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
 	}, nil)
 
-	u, err := suite.handler.GetUser(context.TODO(), &pb.GetUserRequest{Id: TestId})
+	u, err := suite.handler.GetUser(context.TODO(), &pb.GetUserRequest{Id: TestID})
 	suite.Nil(err)
 	suite.NotNil(u)
 	suite.Equal(true, u.ApiEnabled)
@@ -45,47 +45,47 @@ func (suite *HandlerTestSuite) TestGetUser() {
 }
 
 func (suite *HandlerTestSuite) TestGetUser_NotFound() {
-	suite.serviceMock.On("GetUser", TestId).Return(nil, errors.New(""))
+	suite.serviceMock.On("GetUser", TestID).Return(nil, errors.New(""))
 
-	u, err := suite.handler.GetUser(context.TODO(), &pb.GetUserRequest{Id: TestId})
+	u, err := suite.handler.GetUser(context.TODO(), &pb.GetUserRequest{Id: TestID})
 	suite.Nil(u)
 	suite.NotNil(err)
 }
 
 func (suite *HandlerTestSuite) TestCreateUser() {
-	suite.serviceMock.On("CreateUser", TestId).Return(&user.User{
-		ID:         TestId,
+	suite.serviceMock.On("CreateUser", TestID).Return(&user.User{
+		ID:         TestID,
 		ApiEnabled: false,
 	}, nil)
 
-	u, err := suite.handler.CreateUser(context.TODO(), &pb.CreateUserRequest{Id: TestId})
+	u, err := suite.handler.CreateUser(context.TODO(), &pb.CreateUserRequest{Id: TestID})
 	suite.Nil(err)
 	suite.NotNil(u)
 	suite.Equal(false, u.ApiEnabled)
 }
 
 func (suite *HandlerTestSuite) TestCreateUser_Error() {
-	suite.serviceMock.On("CreateUser", TestId).Return(nil, errors.New(""))
+	suite.serviceMock.On("CreateUser", TestID).Return(nil, errors.New(""))
 
-	u, err := suite.handler.CreateUser(context.TODO(), &pb.CreateUserRequest{Id: TestId})
+	u, err := suite.handler.CreateUser(context.TODO(), &pb.CreateUserRequest{Id: TestID})
 	suite.Nil(u)
 	suite.NotNil(err)
 }
 
 func (suite *HandlerTestSuite) TestUpdateUserApiCredentials() {
 	u := &user.User{
-		ID:            TestId,
+		ID:            TestID,
 		ApiEnabled:    true,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
 	}
 
-	suite.serviceMock.On("GetUser", TestId).Return(u, nil)
+	suite.serviceMock.On("GetUser", TestID).Return(u, nil)
 	suite.serviceMock.On("AddSteamMatchHistoryAuthenticationCode", u, u.ApiKey, u.AuthCode, u.LastShareCode).Return(nil)
 
 	status, err := suite.handler.UpdateUserApiCredentials(context.TODO(), &pb.UpdateUserApiCredentialsRequest{
-		Id:            TestId,
+		Id:            TestID,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
@@ -96,10 +96,10 @@ func (suite *HandlerTestSuite) TestUpdateUserApiCredentials() {
 }
 
 func (suite *HandlerTestSuite) TestUpdateUserApiCredentials_NotFound() {
-	suite.serviceMock.On("GetUser", TestId).Return(nil, errors.New(""))
+	suite.serviceMock.On("GetUser", TestID).Return(nil, errors.New(""))
 
 	status, err := suite.handler.UpdateUserApiCredentials(context.TODO(), &pb.UpdateUserApiCredentialsRequest{
-		Id:            TestId,
+		Id:            TestID,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
@@ -111,18 +111,18 @@ func (suite *HandlerTestSuite) TestUpdateUserApiCredentials_NotFound() {
 
 func (suite *HandlerTestSuite) TestUpdateUserApiCredentials_Error() {
 	u := &user.User{
-		ID:            TestId,
+		ID:            TestID,
 		ApiEnabled:    true,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
 	}
 
-	suite.serviceMock.On("GetUser", TestId).Return(u, nil)
+	suite.serviceMock.On("GetUser", TestID).Return(u, nil)
 	suite.serviceMock.On("AddSteamMatchHistoryAuthenticationCode", u, u.ApiKey, u.AuthCode, u.LastShareCode).Return(errors.New(""))
 
 	status, err := suite.handler.UpdateUserApiCredentials(context.TODO(), &pb.UpdateUserApiCredentialsRequest{
-		Id:            TestId,
+		Id:            TestID,
 		ApiKey:        TestApiKey,
 		AuthCode:      TestAuthCode,
 		LastShareCode: TestShareCode,
