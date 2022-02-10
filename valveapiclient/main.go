@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
-	"net/http"
 	"time"
 
+	"github.com/Cludch/csgo-microservices/shared/pkg/metrics"
 	"github.com/Cludch/csgo-microservices/shared/pkg/queue"
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
 	"github.com/Cludch/csgo-microservices/valveapiclient/internal/config"
@@ -16,7 +16,6 @@ import (
 	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/api_client"
 	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/valve_match_api"
 	pb "github.com/Cludch/csgo-microservices/valveapiclient/proto"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -63,7 +62,7 @@ func main() {
 	go query()
 
 	// Create prometheus server.
-	go prometheusServer()
+	go metrics.PrometheusServer(prometheusPort)
 
 	// Create loopback gRPC server.
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
@@ -79,15 +78,6 @@ func main() {
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to grpc serve: %v", err)
-	}
-}
-
-func prometheusServer() {
-	log.Printf("exposing prometheus metrics on /metrics on localhost:%d", prometheusPort)
-	http.Handle("/metrics", promhttp.Handler())
-	err := http.ListenAndServe(fmt.Sprintf("localhost:%d", prometheusPort), nil)
-	if err != nil {
-		log.Fatalf("failed to serve prometheus http server: %v", err)
 	}
 }
 
