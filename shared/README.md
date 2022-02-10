@@ -29,6 +29,11 @@ Each application uses the AMQP broker for communication. The following configura
 
 The entity package contains an ID type, which is basically a UUID.
 
+## Metrics
+
+The metrics package offers helper methods for the creation of metrics.
+Currently, it has a method to create a Prometheus http server.
+
 ## Queue
 
 The queue package is able to connect to a RabbitMQ AMQP broker and publish messages or consume these.
@@ -36,3 +41,7 @@ The queue package is able to connect to a RabbitMQ AMQP broker and publish messa
 ## ShareCode
 
 The share code package contains the logic to decode CSGO share codes to their match id, outcome id and token.
+
+## Util
+
+This package contains smaller util functions.
