@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package gamecoordinatorclient;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./proto;gamecoordinatorclient";
+
+message MatchDetailsRequest {
+    uint64 matchId = 1;
+    uint64 outcomeId = 2;
+    uint32 token = 3;
+}
+
+message MatchDetailsResponse {
+    uint64 matchId = 1;
+    google.protobuf.Timestamp matchTime = 2;
+    string downloadUrl = 3;
+}
+
+service MatchDetailQueryService {
+	rpc GetMatchDetails(MatchDetailsRequest) returns (MatchDetailsResponse) {}
+}
