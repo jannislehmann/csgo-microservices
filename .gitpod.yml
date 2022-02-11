@@ -1,11 +1,14 @@
 tasks:
-  - init: |
-      PROTOC_ZIP=protoc-3.19.4-linux-x86_64.zip
-      curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/$PROTOC_ZIP
-      sudo unzip -o $PROTOC_ZIP -d /usr/local bin/protoc
-      sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
-      rm -f $PROTOC_ZIP
-      sudo chmod +x /usr/local/bin/protoc
+  - name: Set up Protobuf Compiler
+    command: >
+      PROTOC_ZIP=protoc-3.19.4-linux-x86_64.zip &&
+      curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/$PROTOC_ZIP &&
+      sudo unzip -o $PROTOC_ZIP -d /usr/local bin/protoc &&
+      sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*' &&
+      rm -f $PROTOC_ZIP &&
+      sudo chmod +x /usr/local/bin/protoc &&
       sudo chmod -R 777 /usr/local/include
-    command: |
-      make init
+
+vscode:
+  extensions:
+    - golang.Go
