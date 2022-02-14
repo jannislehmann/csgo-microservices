@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	prometheusPort = 2112
+	prometheusPort = 2111
 	port           = 50051
 	topic          = "match.sharecode"
 )
