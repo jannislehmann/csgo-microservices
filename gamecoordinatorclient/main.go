@@ -19,8 +19,8 @@ import (
 )
 
 var (
-	prometheusPort = 2111
-	port           = 50051
+	prometheusPort = 2112
+	port           = 50052
 	sharecodeTopic = "match.sharecode"
 	publishTopic   = "match.gamedetails"
 )
@@ -53,7 +53,7 @@ func main() {
 	// Wait for client connection to succeed.
 	steamConfig := configService.GetConfig().Steam
 	var wg sync.WaitGroup
-	gamecoordinatorService.Connect(steamConfig.Username, steamConfig.Password, steamConfig.TwoFactorSecret, wg)
+	go gamecoordinatorService.Connect(steamConfig.Username, steamConfig.Password, steamConfig.TwoFactorSecret, wg)
 	wg.Wait()
 
 	go consumeMessages()
@@ -64,20 +64,21 @@ func main() {
 	// Create loopback gRPC server.
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 
 	// Register RPC handler.
 	pb.RegisterMatchDetailQueryServiceServer(s, gamecoordinator.NewGamecoordinatorApiHandler(gamecoordinatorService))
 
-	log.Printf("server listening at %v", lis.Addr())
+	log.Printf("Server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to grpc serve: %v", err)
+		log.Fatalf("Failed to grpc serve: %v", err)
 	}
 }
 
 func consumeMessages() {
+	log.Debugf("Creating queue consumer for %s", sharecodeTopic)
 	channel, err := queueService.Consume(sharecodeTopic)
 	if err != nil {
 		log.Fatalf("Unable to consume topic %s: %v", sharecodeTopic, err)
@@ -90,6 +91,8 @@ func consumeMessages() {
 				log.Error("Unable to unmarshal received data into share code data")
 				d.Reject(false)
 			}
+
+			log.Debugf("requesting match details for %s", sc.Encoded)
 
 			select {
 			case details := <-gamecoordinatorService.RequestMatchDetails(sc):
@@ -124,6 +127,6 @@ func publishMatchDetails(matchDetails *gamecoordinator.MatchDetails) error {
 		return fmt.Errorf("unable to publish match details for %d", matchDetails.MatchId)
 	}
 
-	log.Infof("published match details for %d", matchDetails.MatchId)
+	log.Infof("Published match details for %d", matchDetails.MatchId)
 	return errPublish
 }
