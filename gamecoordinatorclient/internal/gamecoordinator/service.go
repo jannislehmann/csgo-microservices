@@ -27,6 +27,7 @@ func NewService() *GamecoordinatorService {
 
 // Connect connects to the steam service and starts a connection with the CSGO gamecoordinator.
 func (s *GamecoordinatorService) Connect(username, password, twoFactorSecret string, connected sync.WaitGroup) {
+	connected.Add(1)
 	totpInstance := totp.NewTotp(twoFactorSecret)
 
 	myLoginInfo := new(steam.LogOnDetails)
