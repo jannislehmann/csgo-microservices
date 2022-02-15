@@ -21,8 +21,8 @@ import (
 var (
 	prometheusPort = 2112
 	port           = 50052
-	sharecodeTopic = "match.sharecode"
-	publishTopic   = "match.gamedetails"
+	sharecodeTopic = "sharecode"
+	publishTopic   = "gamedetails"
 )
 
 var configService *config.ConfigService
