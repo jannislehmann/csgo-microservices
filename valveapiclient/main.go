@@ -23,7 +23,7 @@ import (
 var (
 	prometheusPort = 2111
 	port           = 50051
-	topic          = "match.sharecode"
+	topic          = "sharecode"
 )
 
 var configService *config.ConfigService
