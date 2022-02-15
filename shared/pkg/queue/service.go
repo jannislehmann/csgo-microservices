@@ -8,8 +8,8 @@ import (
 )
 
 type QueueService struct {
-	Connection *amqp.Connection
 	Channel    *amqp.Channel
+	Connection *amqp.Connection
 }
 
 func NewService() *QueueService {
@@ -33,7 +33,7 @@ func (s *QueueService) CreateQueue(topic string) error {
 	}
 
 	if _, err := channel.QueueDeclare(
-		"",
+		topic,
 		true,
 		false,
 		false,
@@ -79,7 +79,6 @@ func (s *QueueService) Publish(body []byte, topic string) (<-chan bool, error) {
 	return resultChannel, nil
 }
 
-// See: https://www.rabbitmq.com/tutorials/tutorial-two-go.html
 func (s *QueueService) Consume(topic string) (<-chan amqp.Delivery, error) {
 	return s.Channel.Consume(
 		topic,
