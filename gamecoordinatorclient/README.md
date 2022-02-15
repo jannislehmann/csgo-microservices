@@ -10,7 +10,9 @@ Steam only allows one session per account to the csgo gamecoordinator / being lo
 ## Protobuf issue
 
 To run the application and allow protobufs to be definied multiple times, use the following command:
-`GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn go run main.go`
+`GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn go run main.go`.
+
+This should be fixed eventually to prevent unwanted side-effects. See the issue [here](https://github.com/Philipp15b/go-steam/issues/124).
 
 ## Config
 

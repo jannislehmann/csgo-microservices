@@ -18,7 +18,7 @@ build:
 
 .PHONY: test
 test:
-	@go test -v ./... -cover
+	@GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn go test -v ./... -cover
 
 .PHONY: docker
 docker:
