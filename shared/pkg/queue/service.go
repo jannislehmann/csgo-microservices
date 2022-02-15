@@ -9,7 +9,7 @@ import (
 
 type QueueService struct {
 	Channel    *amqp.Channel
-	connection *amqp.Connection
+	Connection *amqp.Connection
 }
 
 func NewService() *QueueService {
@@ -21,13 +21,13 @@ func (s *QueueService) Connect(amqpURI string) error {
 	if err != nil {
 		return fmt.Errorf("dial: %s", err)
 	}
-	s.connection = connection
+	s.Connection = connection
 
 	return nil
 }
 
 func (s *QueueService) CreateQueue(topic string) error {
-	channel, err := s.connection.Channel()
+	channel, err := s.Connection.Channel()
 	if err != nil {
 		return fmt.Errorf("channel: %s", err)
 	}
