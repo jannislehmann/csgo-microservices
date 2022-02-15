@@ -7,6 +7,11 @@ to the broker.
 In order to scale this service, each service *must* have a different steam account to use.
 Steam only allows one session per account to the csgo gamecoordinator / being logged in.
 
+## Protobuf issue
+
+To run the application and allow protobufs to be definied multiple times, use the following command:
+`GOLANG_PROTOBUF_REGISTRATION_CONFLICT=warn go run main.go`
+
 ## Config
 
 The service has the following extensions for the config.
