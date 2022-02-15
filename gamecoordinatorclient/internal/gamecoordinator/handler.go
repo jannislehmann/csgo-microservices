@@ -70,7 +70,7 @@ func (s *GamecoordinatorService) handleMatchList(packet *gamecoordinator.GCPacke
 				DownloadUrl: round.GetMap(),
 			}
 
-			const msg = "gamecoordinator: received match details for %d"
+			const msg = "received match details for %d"
 			log.Infof(msg, matchDetails.MatchId)
 			matchResponse <- matchDetails
 		}

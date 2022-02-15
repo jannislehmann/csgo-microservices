@@ -96,10 +96,11 @@ func consumeMessages() {
 				log.Debugf(msg, sc.Encoded)
 				log.Printf("received match details for: %s", sc.Encoded)
 				if err := publishMatchDetails(details); err != nil {
-					log.Fatalf("unable to publis match detailts for %s %v", details.MatchId, err)
-					d.Ack(false)
-				} else {
+					log.Errorf("unable to publish match details for %d %v", details.MatchId, err)
 					d.Nack(false, true)
+				} else {
+					log.Debugf("published match details. acknowledging message")
+					d.Ack(false)
 				}
 			case <-time.After(15 * time.Second):
 				const msg = "failed to receive response for %s"
@@ -124,6 +125,6 @@ func publishMatchDetails(matchDetails *gamecoordinator.MatchDetails) error {
 		return fmt.Errorf("unable to publish match details for %d", matchDetails.MatchId)
 	}
 
-	log.Infof("Published match details for %d", matchDetails.MatchId)
+	log.Infof("published match details for %d", matchDetails.MatchId)
 	return errPublish
 }
