@@ -26,8 +26,7 @@ func NewService() *GamecoordinatorService {
 }
 
 // Connect connects to the steam service and starts a connection with the CSGO gamecoordinator.
-func (s *GamecoordinatorService) Connect(username, password, twoFactorSecret string, connected sync.WaitGroup) {
-	connected.Add(1)
+func (s *GamecoordinatorService) Connect(username, password, twoFactorSecret string) {
 	totpInstance := totp.NewTotp(twoFactorSecret)
 
 	myLoginInfo := new(steam.LogOnDetails)
@@ -45,25 +44,31 @@ func (s *GamecoordinatorService) Connect(username, password, twoFactorSecret str
 		log.Panic(connectErr)
 	}
 
-	for event := range client.Events() {
-		switch e := event.(type) {
-		case *steam.ConnectedEvent:
-			log.Info("connected to steam. Logging in...")
-			client.Auth.LogOn(myLoginInfo)
-		case *steam.LoggedOnEvent:
-			log.Info("logged on")
-			s.client = client
-			client.Social.SetPersonaState(steamlang.EPersonaState_Invisible)
+	var connected sync.WaitGroup
+	connected.Add(1)
+	// TODO: Maybe this must not terminate?
+	go func() {
+		for event := range client.Events() {
+			switch e := event.(type) {
+			case *steam.ConnectedEvent:
+				log.Info("connected to steam. Logging in...")
+				client.Auth.LogOn(myLoginInfo)
+			case *steam.LoggedOnEvent:
+				log.Info("logged on")
+				s.client = client
+				client.Social.SetPersonaState(steamlang.EPersonaState_Invisible)
 
-			s.connectToGamecordinator()
+				s.connectToGamecordinator()
 
-			connected.Done()
-		case steam.DisconnectedEvent:
-			log.Panic("steam client: disconnected")
-		case steam.FatalErrorEvent:
-			log.Fatal(e)
+				connected.Done()
+			case steam.DisconnectedEvent:
+				log.Panic("steam client: disconnected")
+			case steam.FatalErrorEvent:
+				log.Fatal(e)
+			}
 		}
-	}
+	}()
+	connected.Wait()
 }
 
 func (s *GamecoordinatorService) connectToGamecordinator() {
@@ -75,12 +80,16 @@ func (s *GamecoordinatorService) connectToGamecordinator() {
 // shakeHands sends a hello to the GC.
 func (s *GamecoordinatorService) shakeHands() {
 	// Try to avoid not being ready on instant call of connection.
-	time.Sleep(5 * time.Second)
+	time.Sleep(3 * time.Second)
+
+	log.Debug("Sending handshake")
 
 	version := uint32(1)
 	s.write(uint32(csgo.EGCBaseClientMsg_k_EMsgGCClientHello), &csgo.CMsgClientHello{
 		Version: &version,
 	})
+
+	time.Sleep(1 * time.Second)
 }
 
 // Write sends a message to the game coordinator.
