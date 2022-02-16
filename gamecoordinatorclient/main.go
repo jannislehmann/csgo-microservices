@@ -85,7 +85,9 @@ func consumeMessages() {
 			err := json.Unmarshal(d.Body, &sc)
 			if err != nil {
 				log.Error("unable to unmarshal received data into share code data")
-				d.Reject(false)
+				if err := d.Reject(false); err != nil {
+					log.Errorf("unable to reject message, %v", err)
+				}
 			}
 
 			log.Debugf("requesting match details for %s", sc.Encoded)
@@ -97,18 +99,23 @@ func consumeMessages() {
 				log.Printf("received match details for: %s", sc.Encoded)
 				if err := publishMatchDetails(details); err != nil {
 					log.Errorf("unable to publish match details for %d %v", details.MatchId, err)
-					d.Nack(false, true)
+					if err := d.Nack(false, true); err != nil {
+						log.Errorf("unable to nack message, %v", err)
+					}
 				} else {
 					log.Debugf("published match details. acknowledging message")
-					d.Ack(false)
+					if err := d.Ack(false); err != nil {
+						log.Errorf("unable to ack message, %v", err)
+					}
 				}
 			case <-time.After(15 * time.Second):
 				const msg = "failed to receive response for %s"
 				log.Debugf(msg, sc.Encoded)
 				// Requeue the message as this could be an issue with the gc.
-				d.Nack(false, true)
+				if err := d.Nack(false, true); err != nil {
+					log.Errorf("unable to nack message, %v", err)
+				}
 			}
-
 		}
 	}()
 }
