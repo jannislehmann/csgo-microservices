@@ -23,6 +23,7 @@ type HandlerTestSuite struct {
 func (suite *HandlerTestSuite) SetupTest() {
 	suite.serviceMock = new(mocks.GamecoordinatorUseCase)
 	suite.handler = gamecoordinator.NewGamecoordinatorApiHandler(suite.serviceMock)
+	testShareCode.Encoded = ""
 }
 
 func TestHandlerTestSuite(t *testing.T) {
@@ -33,16 +34,20 @@ func (suite *HandlerTestSuite) TestGetMatchDetails() {
 	channel := make(chan *gamecoordinator.MatchDetails)
 	suite.serviceMock.On("RequestMatchDetails", testShareCode).Return(channel)
 
+	details := &gamecoordinator.MatchDetails{MatchId: 1, MatchTime: time.Now(), DownloadUrl: "download"}
+
+	go func() {
+		time.Sleep(100 * time.Microsecond)
+		channel <- details
+	}()
+
 	res, err := suite.handler.GetMatchDetails(context.TODO(),
 		&pb.MatchDetailsRequest{MatchId: testShareCode.MatchID, OutcomeId: testShareCode.OutcomeID, Token: testShareCode.Token})
-
-	details := &gamecoordinator.MatchDetails{MatchId: 1, MatchTime: time.Now(), DownloadUrl: "download"}
-	channel <- details
 
 	suite.Nil(err)
 	suite.NotNil(res)
 	suite.Equal(details.MatchId, res.MatchId)
-	suite.Equal(details.MatchTime, res.MatchTime)
+	suite.Equal(details.MatchTime.Unix(), res.MatchTime.AsTime().Unix())
 	suite.Equal(details.DownloadUrl, res.DownloadUrl)
 }
 
@@ -50,10 +55,13 @@ func (suite *HandlerTestSuite) TestGetMatchDetails_Nil() {
 	channel := make(chan *gamecoordinator.MatchDetails)
 	suite.serviceMock.On("RequestMatchDetails", testShareCode).Return(channel)
 
+	go func() {
+		time.Sleep(100 * time.Microsecond)
+		channel <- nil
+	}()
+
 	res, err := suite.handler.GetMatchDetails(context.TODO(),
 		&pb.MatchDetailsRequest{MatchId: testShareCode.MatchID, OutcomeId: testShareCode.OutcomeID, Token: testShareCode.Token})
-
-	channel <- nil
 
 	suite.NotNil(err)
 	suite.Nil(res)
