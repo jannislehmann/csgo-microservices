@@ -14,6 +14,12 @@ Currently, the microservice suite consists of the following services.
 The API client consumes Valve's game history API and saves the game share codes in the database.
 In order to add a new steam / csgo user, whose demos should be monitored, a user must be manually created in the database.
 
+### Gamecoordinatorclient
+
+The Steam / CSGO Gamecoordinator client communicates with the game's infrastructure.
+This is used to request match details (i.e. time and download url) for share codes in the queue.
+These will the be put into a queue again for further processing.
+
 ## Infrastructure
 
 All services require a common RabbitMQ broker. Each service may define its own dependencies as well, which will be described in the project's README file.
