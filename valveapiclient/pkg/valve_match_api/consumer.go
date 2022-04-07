@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/api_client"
+	"github.com/Cludch/csgo-microservices/shared/pkg/api_client"
 )
 
 const apiUrl = "https://api.steampowered.com/ICSGOPlayers_730/GetNextMatchSharingCode/v1"

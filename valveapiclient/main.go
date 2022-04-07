@@ -6,6 +6,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/Cludch/csgo-microservices/shared/pkg/api_client"
 	"github.com/Cludch/csgo-microservices/shared/pkg/metrics"
 	"github.com/Cludch/csgo-microservices/shared/pkg/queue"
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
@@ -13,7 +14,6 @@ import (
 	"github.com/Cludch/csgo-microservices/valveapiclient/internal/database"
 	"github.com/Cludch/csgo-microservices/valveapiclient/internal/domain/user"
 	"github.com/Cludch/csgo-microservices/valveapiclient/internal/domain/valve_api"
-	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/api_client"
 	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/valve_match_api"
 	pb "github.com/Cludch/csgo-microservices/valveapiclient/proto"
 	log "github.com/sirupsen/logrus"
