@@ -3,6 +3,10 @@
 This module contains shared utility code, which is used
 by all the other microservices.
 
+## API client
+
+The api client packages contains a small http client wrapper to ease the testing of the API consumers.
+
 ## Config
 
 The config package uses [viper](https://github.com/spf13/viper) to load an application config using either a json file or env variables.
