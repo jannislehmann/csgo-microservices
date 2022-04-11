@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Cludch/csgo-microservices/valveapiclient/mocks"
+	"github.com/Cludch/csgo-microservices/shared/mocks"
 	"github.com/Cludch/csgo-microservices/valveapiclient/pkg/valve_match_api"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
