@@ -19,3 +19,4 @@ test:
 .PHONY: mock
 mock:
 	@mockery --all --dir=pkg/queue
+	@mockery --all --dir=pkg/api_client
