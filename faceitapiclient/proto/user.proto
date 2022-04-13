@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package faceitapiclient;
+
+option go_package = "./proto;faceitapiclient";
+
+message User {
+    string id = 1;
+    bool apiEnabled = 2;
+}
+
+message CreateUserRequest {
+    string id = 1;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message UpdateUserApiCredentialsRequest {
+    string id = 1;
+}
+
+message StatusResponse {
+    bool success = 1;
+}
+
+service UserService {
+    rpc GetUser(GetUserRequest) returns (User) {}
+    rpc CreateUser(CreateUserRequest) returns (User) {}
+}

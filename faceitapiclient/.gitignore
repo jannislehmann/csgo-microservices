@@ -1,0 +1,12 @@
+# don't commit the service binary to vcs
+faceitapiclient
+
+# Workspace config
+.vscode
+
+# Persistent / test data
+data/
+
+# Config
+config/config.yaml
+csgo.env
