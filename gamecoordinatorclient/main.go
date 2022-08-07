@@ -11,6 +11,7 @@ import (
 	"github.com/Cludch/csgo-microservices/shared/pkg/metrics"
 	"github.com/Cludch/csgo-microservices/shared/pkg/queue"
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
+	shared "github.com/Cludch/csgo-microservices/shared/proto"
 
 	pb "github.com/Cludch/csgo-microservices/gamecoordinatorclient/proto"
 	log "github.com/sirupsen/logrus"
@@ -21,7 +22,7 @@ var (
 	prometheusPort = 2112
 	port           = 50052
 	sharecodeTopic = "sharecode"
-	publishTopic   = "gamedetails"
+	publishTopic   = "valve-gamedetails"
 )
 
 var configService *config.ConfigService
@@ -120,7 +121,7 @@ func consumeMessages() {
 	}()
 }
 
-func publishMatchDetails(matchDetails *gamecoordinator.MatchDetails) error {
+func publishMatchDetails(matchDetails *shared.MatchDetails) error {
 	json, err := json.Marshal(matchDetails)
 	if err != nil {
 		return fmt.Errorf("marshal failed: %v", err)

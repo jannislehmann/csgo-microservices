@@ -7,7 +7,6 @@ import (
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type GamecoordinatorApiHandler struct {
@@ -29,7 +28,7 @@ func (h *GamecoordinatorApiHandler) GetMatchDetails(ctx context.Context, req *pb
 
 	return &pb.MatchDetailsResponse{
 		MatchId:     matchDetails.MatchId,
-		MatchTime:   timestamppb.New(matchDetails.MatchTime),
+		MatchTime:   matchDetails.MatchTime,
 		DownloadUrl: matchDetails.DownloadUrl,
 	}, nil
 }

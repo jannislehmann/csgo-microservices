@@ -9,7 +9,9 @@ import (
 	"github.com/Cludch/csgo-microservices/gamecoordinatorclient/mocks"
 	pb "github.com/Cludch/csgo-microservices/gamecoordinatorclient/proto"
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
+	shared "github.com/Cludch/csgo-microservices/shared/proto"
 	"github.com/stretchr/testify/suite"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 var testShareCode, _ = share_code.Decode("CSGO-Z6wMP-JeoHt-C23L7-HTJ7B-feQ3A")
@@ -31,10 +33,10 @@ func TestHandlerTestSuite(t *testing.T) {
 }
 
 func (suite *HandlerTestSuite) TestGetMatchDetails() {
-	channel := make(chan *gamecoordinator.MatchDetails)
+	channel := make(chan *shared.MatchDetails)
 	suite.serviceMock.On("RequestMatchDetails", testShareCode).Return(channel)
 
-	details := &gamecoordinator.MatchDetails{MatchId: 1, MatchTime: time.Now(), DownloadUrl: "download"}
+	details := &shared.MatchDetails{MatchId: 1, MatchTime: timestamppb.New(time.Now()), DownloadUrl: "download"}
 
 	go func() {
 		time.Sleep(100 * time.Microsecond)
@@ -47,12 +49,12 @@ func (suite *HandlerTestSuite) TestGetMatchDetails() {
 	suite.Nil(err)
 	suite.NotNil(res)
 	suite.Equal(details.MatchId, res.MatchId)
-	suite.Equal(details.MatchTime.Unix(), res.MatchTime.AsTime().Unix())
+	suite.Equal(details.MatchTime, res.MatchTime)
 	suite.Equal(details.DownloadUrl, res.DownloadUrl)
 }
 
 func (suite *HandlerTestSuite) TestGetMatchDetails_Nil() {
-	channel := make(chan *gamecoordinator.MatchDetails)
+	channel := make(chan *shared.MatchDetails)
 	suite.serviceMock.On("RequestMatchDetails", testShareCode).Return(channel)
 
 	go func() {

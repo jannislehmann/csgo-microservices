@@ -4,23 +4,19 @@ import (
 	"time"
 
 	"github.com/Cludch/csgo-microservices/shared/pkg/share_code"
+	shared "github.com/Cludch/csgo-microservices/shared/proto"
 	csgo "github.com/Philipp15b/go-steam/v3/csgo/protocol/protobuf"
 	"github.com/Philipp15b/go-steam/v3/protocol/gamecoordinator"
 	log "github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // Channel is used to request demos one after another.
-var matchResponse chan *MatchDetails
-
-type MatchDetails struct {
-	MatchId     uint64
-	MatchTime   time.Time
-	DownloadUrl string
-}
+var matchResponse chan *shared.MatchDetails
 
 // RequestMatchDetails sends a protobuf message to the gc to request details for the requested match.
-func (s *GamecoordinatorService) RequestMatchDetails(sc *share_code.ShareCodeData) chan *MatchDetails {
-	matchResponse = make(chan *MatchDetails)
+func (s *GamecoordinatorService) RequestMatchDetails(sc *share_code.ShareCodeData) chan *shared.MatchDetails {
+	matchResponse = make(chan *shared.MatchDetails)
 	const msg = "requesting match details for %v %d"
 	log.Debugf(msg, sc.Encoded, sc.MatchID)
 	go s.write(uint32(csgo.ECsgoGCMsg_k_EMsgGCCStrike15_v2_MatchListRequestFullGameInfo), &csgo.CMsgGCCStrike15V2_MatchListRequestFullGameInfo{
@@ -64,9 +60,9 @@ func (s *GamecoordinatorService) handleMatchList(packet *gamecoordinator.GCPacke
 				continue
 			}
 
-			matchDetails := &MatchDetails{
+			matchDetails := &shared.MatchDetails{
 				MatchId:     round.GetReservationid(),
-				MatchTime:   time.Unix(int64(*matchEntry.Matchtime), 0),
+				MatchTime:   timestamppb.New(time.Unix(int64(*matchEntry.Matchtime), 0)),
 				DownloadUrl: round.GetMap(),
 			}
 
