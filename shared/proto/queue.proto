@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package shared;
+
+option go_package = "./proto;shared";
+
+import "google/protobuf/timestamp.proto";
+
+message MatchDetails {
+	uint64 match_id = 1;
+    string download_url = 2;
+    google.protobuf.Timestamp match_time = 3;
+}
