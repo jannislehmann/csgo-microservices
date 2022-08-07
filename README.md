@@ -14,11 +14,19 @@ Currently, the microservice suite consists of the following services.
 The API client consumes Valve's game history API and saves the game share codes in the database.
 In order to add a new steam / csgo user, whose demos should be monitored, a user must be manually created in the database.
 
+### Faceit API client
+
+The API client consumes Faceit's game history and adds the new download urls to the queue.
+
 ### Gamecoordinatorclient
 
 The Steam / CSGO Gamecoordinator client communicates with the game's infrastructure.
 This is used to request match details (i.e. time and download url) for share codes in the queue.
 These will the be put into a queue again for further processing.
+
+### Demodownloader
+
+The demodownloader receives instructions on demos to download through the queue.
 
 ## Infrastructure
 

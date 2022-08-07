@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package demodownloader;
+
+option go_package = "./proto;demodownloader";
+
+import "google/protobuf/empty.proto";
+
+message DownloadDemoRequest {
+    string demoUrl = 1;
+}
+
+service UserService {
+    rpc DownloadDemo(DownloadDemoRequest) returns (google.protobuf.Empty) {}
+}
