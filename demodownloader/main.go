@@ -21,7 +21,6 @@ import (
 var (
 	prometheusPort    = 2111
 	port              = 50051
-	publishTopic      = "downloaded-demo"
 	matchdetailsTopic = "gamedetails"
 )
 
@@ -47,9 +46,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer queueService.Connection.Close()
-	if err := queueService.CreateQueue(publishTopic); err != nil {
-		log.Fatal(err)
-	}
 
 	go consumeMessages()
 
@@ -101,20 +97,4 @@ func consumeMessages() {
 			downloaderService.DownloadDemo(matchDetails.DownloadUrl, configService.GetConfig().Downloader.DemosDir, matchDetails.MatchTime)
 		}
 	}()
-}
-
-func publishDownloadedDemo(details *MatchDownloadDetails) error {
-	json, err := json.Marshal(details)
-	if err != nil {
-		return fmt.Errorf("marshal failed: %v", err)
-	}
-
-	ch, errPublish := queueService.Publish(json, publishTopic)
-	ack := <-ch
-	if !ack {
-		return fmt.Errorf("unable to publish faceit match details for %v", details.ID)
-	}
-
-	log.Infof("published faceit match details for %v", details.ID)
-	return errPublish
 }
