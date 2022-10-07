@@ -1,0 +1,7 @@
+.vscode
+.gitignore
+Dockerfile
+
+data/
+config/
+demoparser.env

@@ -28,6 +28,10 @@ These will the be put into a queue again for further processing.
 
 The demodownloader receives instructions on demos to download through the queue.
 
+### Demoparser
+
+The demoparser parses the demos and stores the results in a database.
+
 ## Infrastructure
 
 All services require a common RabbitMQ broker. Each service may define its own dependencies as well, which will be described in the project's README file.

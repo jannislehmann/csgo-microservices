@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:4.4
+    container_name: csgo_mongodb
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:27017:27017
+    env_file: demoparser.env
+    volumes: 
+      - ./data:/data/db

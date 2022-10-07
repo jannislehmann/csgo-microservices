@@ -1,0 +1,13 @@
+global:
+  logLevel: info
+broker:
+  uri: amqp://guest:guest@localhost:5672/
+parser:
+  demosDir: /home/demos
+  workerCount: 5
+database:
+  host: localhost
+  port: 27017
+  username: csgo
+  password: secret
+  database: csgo

@@ -1,0 +1,11 @@
+# don't commit the service binary to vcs
+./demoparser
+
+# Workspace config
+.vscode
+
+# Persistent / test data
+data/
+
+# Config
+config/config.yaml
